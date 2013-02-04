@@ -1,17 +1,34 @@
 import numpy as np
+import statsmodels
 import scipy.stats
 import matplotlib.pyplot as plt
 
-def ecdf(data):
+def ecdf(data, **kwargs):
+    '''
+    Plot empirical cumulative distribution function (eCDF) of data. Additional
+    keyword arguments are passed on to matplotlib's "step" command. Returns the
+    matplotlib figure object containing the eCDF.
+    '''
+    data = np.sort(np.asanyarray(data))
+    return plt.step(data, statsmodels.distributions.ECDF(data)(data),
+            **kwargs)
 
+def density(data, **kwargs):
+    '''
+    Plot kernel density estimation of data. Additional keyword arguments are
+    passed on to matplotlib's "plot" command. Returns matplotlib figure.
+    '''
+    data = np.sort(np.asanyarray(data))
+    xs = np.linspace(data.min(),data.max(),100)
+    plt.plot(xs, scipy.stats.gaussian_kde(data)(xs))
 
-def matrix(data, names, **kwargs):
+def pairs(data, names, **kwargs):
     """
     Plots a scatterplot matrix of subplots.  Each row of "data" is plotted
     against other rows, resulting in a nrows by nrows grid of subplots with the
     diagonal subplots labeled with "names".  Additional keyword arguments are
     passed on to matplotlib's "plot" command. Returns the matplotlib figure
-    object containg the subplot grid.
+    object containing the subplot grid.
 
     From http://stackoverflow.com/questions/7941207/is-there-a-function-to-make-scatterplot-matrices-in-matplotlib
     """
