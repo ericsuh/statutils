@@ -38,33 +38,33 @@ def pairs(data, names, **kwargs):
     fig.subplots_adjust(hspace=0.05, wspace=0.05)
 
     for ax in axes.flat:
-       # Hide all ticks and labels
-       ax.xaxis.set_visible(False)
-       ax.yaxis.set_visible(False)
+        # Hide all ticks and labels
+        ax.xaxis.set_visible(False)
+        ax.yaxis.set_visible(False)
 
-       # Set up ticks only on one side for the "edge" subplots...
-       if ax.is_first_col():
-           ax.yaxis.set_ticks_position('left')
-       if ax.is_last_col():
-           ax.yaxis.set_ticks_position('right')
-       if ax.is_first_row():
-           ax.xaxis.set_ticks_position('top')
-       if ax.is_last_row():
-           ax.xaxis.set_ticks_position('bottom')
+        # Set up ticks only on one side for the "edge" subplots...
+        if ax.is_first_col():
+            ax.yaxis.set_ticks_position('left')
+        if ax.is_last_col():
+            ax.yaxis.set_ticks_position('right')
+        if ax.is_first_row():
+            ax.xaxis.set_ticks_position('top')
+        if ax.is_last_row():
+            ax.xaxis.set_ticks_position('bottom')
 
-   # Plot the data.
-   for i, j in zip(*np.triu_indices_from(axes, k=1)):
-       for x, y in [(i,j), (j,i)]:
-           axes[x,y].plot(data[x], data[y], **kwargs)
+    # Plot the data.
+    for i, j in zip(*np.triu_indices_from(axes, k=1)):
+        for x, y in [(i,j), (j,i)]:
+            axes[x,y].plot(data[x], data[y], **kwargs)
 
-   # Label the diagonal subplots...
-   for i, label in enumerate(names):
-       axes[i,i].annotate(label, (0.5, 0.5), xycoords='axes fraction',
-               ha='center', va='center')
+    # Label the diagonal subplots...
+    for i, label in enumerate(names):
+        axes[i,i].annotate(label, (0.5, 0.5), xycoords='axes fraction',
+                ha='center', va='center')
 
-   # Turn on the proper x or y axes ticks.
-   for i, j in zip(range(numvars), itertools.cycle((-1, 0))):
-       axes[j,i].xaxis.set_visible(True)
-       axes[i,j].yaxis.set_visible(True)
+    # Turn on the proper x or y axes ticks.
+    for i, j in zip(range(numvars), itertools.cycle((-1, 0))):
+        axes[j,i].xaxis.set_visible(True)
+        axes[i,j].yaxis.set_visible(True)
 
-   return fig
+    return fig
