@@ -2,6 +2,7 @@ import numpy as np
 import statsmodels
 import scipy.stats
 import matplotlib.pyplot as plt
+import itertools
 
 def ecdf(data, **kwargs):
     '''
