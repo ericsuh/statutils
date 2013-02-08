@@ -33,7 +33,7 @@ def pairs(data, names, **kwargs):
     From http://stackoverflow.com/questions/7941207/is-there-a-function-to-make-scatterplot-matrices-in-matplotlib
     """
 
-    numvars, numdata = data.shape
+    numdata, numvars = data.shape
     fig, axes = plt.subplots(nrows=numvars, ncols=numvars, figsize=(8,8))
     fig.subplots_adjust(hspace=0.05, wspace=0.05)
 
