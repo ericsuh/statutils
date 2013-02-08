@@ -55,7 +55,7 @@ def pairs(data, names, **kwargs):
     # Plot the data.
     for i, j in zip(*np.triu_indices_from(axes, k=1)):
         for x, y in [(i,j), (j,i)]:
-            axes[x,y].plot(data[x], data[y], **kwargs)
+            axes[x,y].plot(data.ix[:,x], data.ix[:,y], **kwargs)
 
     # Label the diagonal subplots...
     for i, label in enumerate(names):
