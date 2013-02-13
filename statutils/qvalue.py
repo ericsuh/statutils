@@ -16,7 +16,7 @@ def qvalue(pvalues,
     implementation of his q-value calculation algorithm. [1]_ This Python
     function aims to reproduce the R implementation reasonably closely, save
     some Pythonic/NumPythonic idioms, and renaming/dropping a few parameters.
-    
+
     Parameters
     ----------
 
@@ -53,8 +53,8 @@ def qvalue(pvalues,
     '''
     # Parameter checking
     pvalues = np.asanyarray(pvalues)
-    if pvalues.min() < 0 or pvalues.max() > 1:
-        raise ValueError('p-values must fall in interval [0,1]')
+    if pvalues.min() < 0 or pvalues.max() > 1 or np.isnan(pvalues).any():
+        raise ValueError('p-values must fall in interval [0,1] and not be NaN')
     if tuning is None:
         tuning = np.linspace(0, 0.9, 19) # separated by 0.05
     else:
@@ -87,7 +87,7 @@ def qvalue(pvalues,
                     / (1-tuning)
             mse = ((pi0boot - pi0.min())**2).sum(axis=0)
             pi0 = pi0[mse.argmin()]
-    pi = min(pi0, 1)
+    pi0 = min(pi0, 1)
     if pi0 <= 0:
         raise Exception('Estimated pi0 <= 0. Check that you have valid '
                 'p-values or use another pi0method')
@@ -100,11 +100,12 @@ def qvalue(pvalues,
     else:
         qvalues = pi0 * pvalues.size * pvalues / ranks
     ordering = pvalues.argsort()
-    qvalues[ordering[pvalues.size - 1]] = min(
-        qvalues[ordering[pvalues.size - 1]],
+    maxidx = pvalues.size - 1
+    qvalues[ordering[maxidx]] = min(
+        qvalues[ordering[maxidx]],
         1
     )
-    for i in xrange(0, pvalues.size - 1).__reversed__():
+    for i in xrange(0, maxidx).__reversed__():
         qvalues[ordering[i]] = np.min([
             qvalues[ordering[i]],
             qvalues[ordering[i+1]],
