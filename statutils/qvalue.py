@@ -111,4 +111,4 @@ def qvalue(pvalues,
             qvalues[ordering[i+1]],
             1])
 
-    return (qvalues, pi0.item(0))
+    return (qvalues, np.asarray(pi0).item(0))
